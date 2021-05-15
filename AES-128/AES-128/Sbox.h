@@ -1,6 +1,5 @@
 #pragma once
-#include <iostream>
-using namespace std;
+#include "pch.h"
 
 class Sbox
 {
@@ -8,5 +7,4 @@ private:
 	
 public:
 	Sbox();
-
 };

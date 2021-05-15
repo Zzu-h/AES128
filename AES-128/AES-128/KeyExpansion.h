@@ -1,13 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-using namespace std;
-
-#define ExpansionCount 176
-#define KeySize 16 //byte
-#define Round 10
-typedef char Key;
+#include "pch.h"
 
 /*
 * Round0: key[0] - key[15]

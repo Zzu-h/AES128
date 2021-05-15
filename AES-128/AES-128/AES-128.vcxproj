@@ -29,6 +29,7 @@
     <ClInclude Include="decoding.h" />
     <ClInclude Include="encoding.h" />
     <ClInclude Include="KeyExpansion.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Sbox.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

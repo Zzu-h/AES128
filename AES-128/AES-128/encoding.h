@@ -1,8 +1,7 @@
 #pragma once
-#include <fstream>
+#include "pch.h"
 #include "Sbox.h"
 #include "KeyExpansion.h"
-#define TotalRound 10
 
 class encoding
 {
@@ -15,13 +14,16 @@ private:
 	const char* plain_Path;
 	const char* cipher_Path;
 
-	// char input[MAX_LEN + 1] = { 0 };
+	Key curKey[KeySize];
+	char plaintext[PlainSize] = { 0 };
+	char ciphertext[CipherSize] = { 0 };
 
 	errno_t binCopy();
 	void Substitute();
 	void ShiftRows();
-	void MixColumns();
+	errno_t MixColumns();
 	void AddRoundKey();
+	void getCurKey(int);
 public:
 	encoding(const char*, const char*, const char*);
 	errno_t doEncoding();

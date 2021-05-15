@@ -22,9 +22,10 @@ errno_t KeyExpansion::do_KeyExpansion() {
 	ReadKey.read(key, KeySize);
 	ReadKey.close();
 	// end
+
 	size_t curIdx = 16;
-	for (size_t i = 1; i <= Round; i++) {
-		G_function(i);
+	for (size_t round = 0; round < Round; round++) {
+		G_function(round);
 		for (size_t w0 = 0; w0 < 4; w0++, curIdx++)
 			key[curIdx] = (key[curIdx - 16] ^ gValue[w0]); //XOR
 		for (size_t w = 0; w < 12; w++, curIdx++)
@@ -36,8 +37,7 @@ errno_t KeyExpansion::do_KeyExpansion() {
 }
 
 void KeyExpansion::G_function(int round) {
-	round--;
-	int idx = 12 + 16 * (round);
+	int idx = 12 + (KeySize * round);
 
 	// left shift
 	for (size_t i = 0; i < 4; i++, idx++)
