@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-
+#include "Sbox.h"
 /*
 * Round0: key[0] - key[15]
 * Round1: key[16] - key[31]
@@ -17,6 +17,9 @@ private:
 	ifstream ReadKey;
 
 	Key gValue[4];
+	Sbox sbox;
+
+	bool ver = polynomial_standard;
 
 	const char* key_path;
 	errno_t do_KeyExpansion();

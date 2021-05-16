@@ -54,7 +54,7 @@ void decoding::ShiftRows() {
 
 }
 errno_t decoding::MixColumns() {
-
+	return 0;
 }
 void decoding::AddRoundKey() {
 

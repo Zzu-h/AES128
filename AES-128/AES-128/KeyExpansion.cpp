@@ -44,12 +44,18 @@ void KeyExpansion::G_function(int round) {
 		gValue[(3+i)%4] = key[idx];
 
 	// sbox 구현 후 통과
-
+	for (size_t i = 0; i < 4; i++) {
+		short back = gValue[i] % 0x10;
+		short front = gValue[i] / 0x10;
+		gValue[i] = sbox.my_sbox[front][back];
+	}
 
 	// RCj XOR
 	char RCj = 1;
 	if (round >= 8) {
 		// Ireducible 방정식을 가지고 Mod 연산 필요
+		RCj = polynomial[ver];
+		RCj = RCj << (round-8);
 	}
 	else
 		RCj = RCj << round;

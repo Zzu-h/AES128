@@ -18,10 +18,13 @@ private:
 	char plaintext[PlainSize] = { 0 };
 	char ciphertext[CipherSize] = { 0 };
 
-	errno_t binCopy();
+	bool ver = polynomial_standard;
+
+	void Copy();
 	void Substitute();
 	void ShiftRows();
 	errno_t MixColumns();
+	char Scalar(int, char*);
 	void AddRoundKey();
 	void getCurKey(int);
 public:
