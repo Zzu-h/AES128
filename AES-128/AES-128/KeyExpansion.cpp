@@ -45,9 +45,10 @@ void KeyExpansion::G_function(int round) {
 
 	// sbox 구현 후 통과
 	for (size_t i = 0; i < 4; i++) {
-		short back = gValue[i] % 0x10;
+		/*short back = gValue[i] % 0x10;
 		short front = gValue[i] / 0x10;
-		gValue[i] = sbox.my_sbox[front][back];
+		gValue[i] = sbox.my_sbox[front][back];*/
+		gValue[i] = aes_sbox[gValue[i]];
 	}
 
 	// RCj XOR
