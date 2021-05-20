@@ -104,11 +104,11 @@ static const uint8_t mix_col_y[4][4] = {
     {0x01, 0x01, 0x02, 0x03},
     {0x03, 0x01, 0x01, 0x02}
 };
-static const uint8_t mix_col_inv_y[4][4] = {
-       {0x0E,0x09,0x0D,0x0B},
-       {0x0B,0x0E,0x09,0x0D},
-       {0x0D,0x0B,0x0E,0x09},
-       {0x09,0x0D,0x0B,0x0E}
+static const uint16_t mix_col_inv_y[4][4] = {
+   { 0x0E,0x0B,0x0D,0x09 },
+   { 0x09,0x0E,0x0B,0x0D },
+   { 0x0D,0x09,0x0E,0x0B },
+   { 0x0B,0x0D,0x09,0x0E }
 };
 
 static int XTime(int X){
@@ -119,7 +119,10 @@ static int Multiply(int X, int Y){
         ((Y >> 1 & 1) * XTime(X)) ^
         ((Y >> 2 & 1) * XTime(XTime(X))) ^
         ((Y >> 3 & 1) * XTime(XTime(XTime(X)))) ^
-        ((Y >> 4 & 1) * XTime(XTime(XTime(XTime(X)))));
+        ((Y >> 4 & 1) * XTime(XTime(XTime(XTime(X))))) ^
+        ((Y >> 5 & 1) * XTime(XTime(XTime(XTime(XTime(X)))))) ^
+        ((Y >> 6 & 1) * XTime(XTime(XTime(XTime(XTime(XTime(X))))))) ^
+        ((Y >> 7 & 1) * XTime(XTime(XTime(XTime(XTime(XTime(XTime(X))))))));
 }
 
 

@@ -1,9 +1,11 @@
 ﻿  encoding.cpp
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(35,18): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(107,13): warning C4101: 'T2' :참조되지 않은 지역 변수입니다.
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(106,10): warning C4101: 'B' :참조되지 않은 지역 변수입니다.
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(107,6): warning C4101: 'I' :참조되지 않은 지역 변수입니다.
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(106,16): warning C4101: 'D' :참조되지 않은 지역 변수입니다.
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(106,7): warning C4101: 'A' :참조되지 않은 지역 변수입니다.
+D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(107,9): warning C4101: 'T1' :참조되지 않은 지역 변수입니다.
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(106,13): warning C4101: 'C' :참조되지 않은 지역 변수입니다.
 D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\AES-128\encoding.cpp(170,39): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   AES-128.vcxproj -> D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\x64\Debug\AES-128.exe

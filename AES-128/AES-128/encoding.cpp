@@ -106,52 +106,52 @@ errno_t encoding::MixColumns() {
 	char A, B, C, D;
 	int I, T1, T2;
 
-	for (size_t i = 0; i < 4; i++)
-	{
-		for (size_t k = 0; k < 4; k++)
-			temp[k] = plaintext[i + k * 4];
-		T1 = temp[0];
-		T2 = temp[0] ^ temp[1] ^ temp[2] ^ temp[3];
-		temp[0] ^= XTime(temp[0] ^ temp[1]) ^ T2;
-		temp[1] ^= XTime(temp[1] ^ temp[2]) ^ T2;
-		temp[2] ^= XTime(temp[2] ^ temp[3]) ^ T2;
-		temp[3] ^= XTime(temp[3] ^ T1) ^ T2;
-
-		for (size_t k = 0; k < 4; k++)
-			ciphertext[i + k * 4] = temp[k];
-	}
-	//for (size_t i = 0; i < 4; i++) {
+	//for (size_t i = 0; i < 4; i++)
+	//{
 	//	for (size_t k = 0; k < 4; k++)
-	//		ciphertext[i + k * 4] = Multiply(plaintext[i + 0 * 4], mix_col_y[k][0])
-	//		^ Multiply(plaintext[i + 1 * 4], mix_col_y[k][1])
-	//		^ Multiply(plaintext[i + 2 * 4], mix_col_y[k][2])
-	//		^ Multiply(plaintext[i + 3 * 4], mix_col_y[k][3]);
+	//		temp[k] = plaintext[i + k * 4];
+	//	T1 = temp[0];
+	//	T2 = temp[0] ^ temp[1] ^ temp[2] ^ temp[3];
+	//	temp[0] ^= XTime(temp[0] ^ temp[1]) ^ T2;
+	//	temp[1] ^= XTime(temp[1] ^ temp[2]) ^ T2;
+	//	temp[2] ^= XTime(temp[2] ^ temp[3]) ^ T2;
+	//	temp[3] ^= XTime(temp[3] ^ T1) ^ T2;
 
-	//	/*A = plaintext[i + 0 * 4];
-	//	B = plaintext[i + 1 * 4];
-	//	C = plaintext[i + 2 * 4];
-	//	D = plaintext[i + 3 * 4];
-
-	//	ciphertext[i + 0 * 4] = Multiply(A, mix_col_y[0][0])
-	//		^ Multiply(B, mix_col_y[0][1])
-	//		^ Multiply(C, mix_col_y[0][2])
-	//		^ Multiply(D, mix_col_y[0][3]);
-
-	//	ciphertext[i + 1 * 4] = Multiply(A, mix_col_y[1][0])
-	//		^ Multiply(B, mix_col_y[1][1])
-	//		^ Multiply(C, mix_col_y[1][2])
-	//		^ Multiply(D, mix_col_y[1][3]);
-
-	//	ciphertext[i + 2 * 4] = Multiply(A, mix_col_y[2][0])
-	//		^ Multiply(B, mix_col_y[2][1])
-	//		^ Multiply(C, mix_col_y[2][2])
-	//		^ Multiply(D, mix_col_y[2][3]);
-
-	//	ciphertext[i + 3 * 4] = Multiply(A, mix_col_y[3][0])
-	//		^ Multiply(B, mix_col_y[3][1])
-	//		^ Multiply(C, mix_col_y[3][2])
-	//		^ Multiply(D, mix_col_y[3][3]);*/
+	//	for (size_t k = 0; k < 4; k++)
+	//		ciphertext[i + k * 4] = temp[k];
 	//}
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t k = 0; k < 4; k++)
+			ciphertext[i + k * 4] = Multiply(plaintext[i + 0 * 4], mix_col_y[k][0])
+			^ Multiply(plaintext[i + 1 * 4], mix_col_y[k][1])
+			^ Multiply(plaintext[i + 2 * 4], mix_col_y[k][2])
+			^ Multiply(plaintext[i + 3 * 4], mix_col_y[k][3]);
+
+		/*A = plaintext[i + 0 * 4];
+		B = plaintext[i + 1 * 4];
+		C = plaintext[i + 2 * 4];
+		D = plaintext[i + 3 * 4];
+
+		ciphertext[i + 0 * 4] = Multiply(A, mix_col_y[0][0])
+			^ Multiply(B, mix_col_y[0][1])
+			^ Multiply(C, mix_col_y[0][2])
+			^ Multiply(D, mix_col_y[0][3]);
+
+		ciphertext[i + 1 * 4] = Multiply(A, mix_col_y[1][0])
+			^ Multiply(B, mix_col_y[1][1])
+			^ Multiply(C, mix_col_y[1][2])
+			^ Multiply(D, mix_col_y[1][3]);
+
+		ciphertext[i + 2 * 4] = Multiply(A, mix_col_y[2][0])
+			^ Multiply(B, mix_col_y[2][1])
+			^ Multiply(C, mix_col_y[2][2])
+			^ Multiply(D, mix_col_y[2][3]);
+
+		ciphertext[i + 3 * 4] = Multiply(A, mix_col_y[3][0])
+			^ Multiply(B, mix_col_y[3][1])
+			^ Multiply(C, mix_col_y[3][2])
+			^ Multiply(D, mix_col_y[3][3]);*/
+	}
 
 	Copy();
 	return 0;

@@ -106,10 +106,10 @@ errno_t decoding::MixColumns() {
 	char A, B, C, D;
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t k = 0; k < 4; k++)
-			plaintext[i + k * 4] = Multiply(ciphertext[i + (0 * 4)], mix_col_inv_y[k][0])
-			^ Multiply(ciphertext[i + (1 * 4)], mix_col_inv_y[k][1])
-			^ Multiply(ciphertext[i + (2 * 4)], mix_col_inv_y[k][2])
-			^ Multiply(ciphertext[i + (3 * 4)], mix_col_inv_y[k][3]);
+			plaintext[i + k * 4] = Multiply(mix_col_inv_y[k][0], ciphertext[i + (0 * 4)])
+			^ Multiply(mix_col_inv_y[k][1], ciphertext[i + (1 * 4)])
+			^ Multiply(mix_col_inv_y[k][2], ciphertext[i + (2 * 4)])
+			^ Multiply(mix_col_inv_y[k][3], ciphertext[i + (3 * 4)]);
 		/*cout << "\n\n";
 		for (size_t k = 0; k < 4; k++)
 			cout  << hex << (short)ciphertext[i + (k * 4)] << " ";
