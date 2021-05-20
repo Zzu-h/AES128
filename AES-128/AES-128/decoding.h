@@ -6,7 +6,6 @@
 class decoding
 {
 private:
-	Sbox sbox;
 	KeyExpansion keys;
 	ifstream cipher;
 	ofstream plain;
@@ -24,11 +23,9 @@ private:
 	void Substitute();
 	void ShiftRows();
 	errno_t MixColumns();
-	char Scalar(int, char*);
 	void AddRoundKey();
 	void getCurKey(int);
 public:
-	decoding(const char*, const char*, const char*);
+	decoding(const char*, const char*, const char*, int );
 	errno_t doDecoding();
 };
-

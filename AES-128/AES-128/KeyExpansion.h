@@ -13,18 +13,17 @@
 class KeyExpansion
 {
 private:
-	Key key[ExpansionCount];
+	Key key[KeySize * (Round + 1)];
 	ifstream ReadKey;
 
 	Key gValue[4];
-	Sbox sbox;
 
-	bool ver = polynomial_standard;
+	bool ver;
 
 	const char* key_path;
 	errno_t do_KeyExpansion();
 	void G_function(int);
 public:
-	KeyExpansion(const char*);
+	KeyExpansion(const char*, int);
 	Key operator[](int);
 };

@@ -6,7 +6,6 @@
 class encoding
 {
 private:
-	Sbox sbox;
 	KeyExpansion keys;
 	ifstream plain;
 	ofstream cipher;
@@ -24,11 +23,10 @@ private:
 	void Substitute();
 	void ShiftRows();
 	errno_t MixColumns();
-	char Scalar(int, char*);
 	void AddRoundKey();
 	void getCurKey(int);
 public:
-	encoding(const char*, const char*, const char*);
+	encoding(const char*, const char*, const char*, int);
 	errno_t doEncoding();
 };
 

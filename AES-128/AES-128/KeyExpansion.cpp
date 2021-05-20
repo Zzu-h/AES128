@@ -1,9 +1,11 @@
 #include "KeyExpansion.h"
+#include <bitset>
 
-KeyExpansion::KeyExpansion(const char* _path){
+KeyExpansion::KeyExpansion(const char* _path, int version){
 	this->key_path = _path;
 	if (do_KeyExpansion())
 		cout << "Failed to Read the Key" << endl;
+	this->ver = version;
 }
 Key KeyExpansion::operator[](int index) {
 	return key[index];
@@ -24,42 +26,48 @@ errno_t KeyExpansion::do_KeyExpansion() {
 	// end
 
 	size_t curIdx = 16;
-	for (size_t round = 0; round < Round; round++) {
-		G_function(round);
-		for (size_t w0 = 0; w0 < 4; w0++, curIdx++)
-			key[curIdx] = (key[curIdx - 16] ^ gValue[w0]); //XOR
-		for (size_t w = 0; w < 12; w++, curIdx++)
-			key[curIdx] = (key[curIdx - 16] ^ key[curIdx - 4]); //XOR
+	for (size_t round = 1; round <= Round; round++) {
+		G_function(round-1);
+
+		for (size_t w0 = 0; w0 < 4; w0++)
+			key[round*KeySize + w0*4] = (key[(round-1) * KeySize + w0 * 4] ^ gValue[w0]); //XOR
+
+		for (size_t i = 1; i < 4; i++)
+			for (size_t k = 0; k < 4; k++)
+				key[round * KeySize + i+k*4] = (key[(round-1) * KeySize + i + k * 4] ^ key[round * KeySize + i-1 + k * 4]); //XOR
 
 	}
-
+	for (auto r = 0; r <= Round; r++) {
+		cout << "round " << r << ": ";
+		for (auto i = 0; i < KeySize; i++)
+			cout << hex << (short)key[r*KeySize + i] << ' ';
+		cout << endl;
+	}
+	cout << "-------------------------------------------------------------" << endl;
 	return 0;
 }
 
 void KeyExpansion::G_function(int round) {
-	int idx = 12 + (KeySize * round);
+	int idx = 3 + (KeySize * round);
 
 	// left shift
-	for (size_t i = 0; i < 4; i++, idx++)
-		gValue[(3+i)%4] = key[idx];
+	for (size_t i = 0; i < 4; i++)
+		gValue[(3+i)%4] = key[idx + i*4];
 
 	// sbox 구현 후 통과
-	for (size_t i = 0; i < 4; i++) {
-		/*short back = gValue[i] % 0x10;
-		short front = gValue[i] / 0x10;
-		gValue[i] = sbox.my_sbox[front][back];*/
+	for (size_t i = 0; i < 4; i++) 
 		gValue[i] = aes_sbox[gValue[i]];
-	}
 
 	// RCj XOR
-	char RCj = 1;
+	uint8_t RCj[4] = { 0x01, 0, 0, 0 };
 	if (round >= 8) {
 		// Ireducible 방정식을 가지고 Mod 연산 필요
-		RCj = polynomial[ver];
-		RCj = RCj << (round-8);
+		RCj[0] = polynomial[ver];
+		RCj[0] = RCj[0] << (round-8);
 	}
 	else
-		RCj = RCj << round;
+		RCj[0] = RCj[0] << round;
 
-	 gValue[0] ^= RCj;
+	for (size_t i = 0; i < 4; i++)
+		 gValue[i] ^= RCj[i];
 }
