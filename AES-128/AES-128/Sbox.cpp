@@ -1,20 +1,23 @@
 #include "Sbox.h"
 
 Sbox::Sbox() {
+	// sbox 계산을 위한 행렬 선계산
 	forward[0] = 0xf1;
 	inverse[0] = 0xA4;
 	for (size_t i = 1; i < 8; i++) {
-		forward[i] = (forward[i - 1] << 1) | (forward[i - 1] >> 7); // left shift
-		inverse[i] = (inverse[i - 1] << 1) | (inverse[i - 1] >> 7); // left shift
+		forward[i] = (forward[i - 1] << 1) | (forward[i - 1] >> 7);		 // left shift
+		inverse[i] = (inverse[i - 1] << 1) | (inverse[i - 1] >> 7);		// left shift
 	}
 	make_Sbox();
 }
 uint8_t Sbox::get_Sbox(uint8_t e){
-	uint8_t inv_e = bin_inv(e);
+	uint8_t inv_e = bin_inv(e);// 입력받은 요소의 역원 구하기
 	
-	uint8_t temp = 0x00, c = 0x63;
+	uint8_t temp = 0x00, c = 0x63;											
 	uint8_t b_Matrix_Cal[8] = { 0, };
 	uint8_t b_output[8] = { 0, };
+
+	// sbox 연산 중 행렬 연산
 	for (size_t k = 0; k < 8; k++)
 		b_Matrix_Cal[k] = (forward[k] & inv_e);
 	for (size_t k = 0; k < 8; k++) {
@@ -26,14 +29,19 @@ uint8_t Sbox::get_Sbox(uint8_t e){
 		temp = 0x00;
 	}
 
+	// 행렬 연산결과와 0x63 상수 XOR연산
 	for (size_t k = 0; k < 8; k++)
 		temp |= (b_output[k] << k);
+
+	// 연산된 결과 값 리턴
 	return temp;
 }
 uint8_t Sbox::get_inv_Sbox(uint8_t d) {
 	uint8_t temp = 0x00, c = 0x05;
 	uint8_t b_Matrix_Cal[8] = { 0, };
 	uint8_t b_output[8] = { 0, };
+
+	// Inverse sbox 연산 중 행렬 연산
 	for (size_t k = 0; k < 8; k++)
 		b_Matrix_Cal[k] = (inverse[k] & d);
 	for (size_t k = 0; k < 8; k++) {
@@ -45,9 +53,11 @@ uint8_t Sbox::get_inv_Sbox(uint8_t d) {
 		temp = 0x00;
 	}
 
+	// 행렬 연산결과와 0x63 상수의 역원 0x05 XOR연산
 	for (size_t k = 0; k < 8; k++)
 		temp |= (b_output[k] << k);
 
+	// 연산된 요소의 역원 구하고 리턴
 	return bin_inv(temp);
 }
 void Sbox::make_Sbox() {
@@ -91,6 +101,7 @@ uint8_t Sbox::bin_inv(uint8_t a){
 }
 
 void Sbox::Print_Sbox() {
+	// Sbox 연산 결과 출력
 	cout << "--------------------------------------\nsbox" << endl;
 	for (auto i = 0; i < 16; i++) {
 		for (auto k = 0; k < 16; k++)

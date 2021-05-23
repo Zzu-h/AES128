@@ -29,11 +29,14 @@ errno_t KeyExpansion::do_KeyExpansion() {
 
 	size_t curIdx = 16;
 	for (size_t round = 1; round <= Round; round++) {
+		// 현재 round의 gvalue를 얻는다.
 		G_function(round-1);
 
+		// gvlaue와 이전 round의 key값을 xor한다. (w0~w3)
 		for (size_t w0 = 0; w0 < 4; w0++)
 			key[round * KeySize + w0] = (key[(round - 1) * KeySize + w0] ^ gValue[w0]); //XOR
 
+		// 바로 직전의 word와 현재 word를 xor한다. (w12~w15)
 		for (size_t i = 1; i < 4; i++)
 			for (size_t k = 0; k < 4; k++)
 				key[round * KeySize + i * 4 + k] = (key[(round - 1) * KeySize + i * 4 + k] ^ key[round * KeySize + (i - 1) * 4 + k]); //XOR
@@ -52,14 +55,18 @@ errno_t KeyExpansion::do_KeyExpansion() {
 }
 
 void KeyExpansion::G_function(int round) {
+	// G_function 결과값을 gValue에 저장
+
 	int idx = (KeySize * round) + 12;
 
 	// left shift
 	for (size_t i = 0; i < 4; i++)
 		gValue[(3 + i) % 4] = key[idx + i];
-	// sbox 구현 후 통과
+
+	// sbox 통과
 	for (size_t i = 0; i < 4; i++) 
 		gValue[i] = sbox.my_aes_sbox[(unsigned char)gValue[i]];
+
 	// RCj XOR
 	uint8_t RCj[4] = { 0x01, 0, 0, 0 };
 	if (round >= 8) {

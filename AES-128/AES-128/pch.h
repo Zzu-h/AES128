@@ -4,6 +4,7 @@
 #include <fstream>
 using namespace std;
 
+// key 확장 사이즈
 #define ExpansionCount 176
 
 #define KeySize 16 //byte
@@ -17,6 +18,8 @@ static const uint8_t polynomial[2] = { 0x1B, 0xE7};
 
 typedef char Key;
 
+
+// mix column 연산을 위한 행렬
 static const uint8_t mix_col_y[4][4] = {
     {0x02, 0x03, 0x01, 0x01},
     {0x01, 0x02, 0x03, 0x01},
@@ -30,9 +33,12 @@ static const uint16_t mix_col_inv_y[4][4] = {
    { 0x0B,0x0D,0x09,0x0E }
 };
 
+// 곱셈 연산 중 자리올림을 위한 함수
 static int XTime(int X){
     return ((X << 1) & 0xFF) ^ (((X >> 7) & 1) * polynomial[ver]);
 }
+
+// 곰셈 연산
 static int Multiply(int X, int Y){
     return ((Y >> 0 & 1) * X) ^
         ((Y >> 1 & 1) * XTime(X)) ^
