@@ -6,9 +6,9 @@ int main(int argc, char* argv[]) {
 		cout << "Please select 'd' or 'e'." << endl;
 		exit(1);
 	}
-
+	Sbox sbox;
 	if (argv[1][0] == 'e') {
-		encoding encode("plain.bin", "cipher.bin", "key.bin", polynomial_transformed);
+		encoding encode("plain.bin", "cipher.bin", "key.bin", &sbox);
 
 		// doEncoding 함수 호출. 반드시 입력할 문자열을 함께 넘길 것. 크기는 MAX_LEN으로
 		if (encode.doEncoding())
@@ -17,8 +17,7 @@ int main(int argc, char* argv[]) {
 			cout << "Encoding Successed." << endl;
 	}
 	else if (argv[1][0] == 'd') {
-
-		decoding decode("cipher.bin", "plain2.bin", "key.bin", polynomial_transformed);
+		decoding decode("cipher.bin", "plain2.bin", "key.bin", &sbox);
 
 		// doDecoding 함수 호출. 반드시 출력할 문자열을 함께 넘길 것. 크기는 MAX_LEN으로
 		if (decode.doDecoding())

@@ -1,11 +1,10 @@
 #include "KeyExpansion.h"
-#include <bitset>
 
-KeyExpansion::KeyExpansion(const char* _path, int version){
+KeyExpansion::KeyExpansion(const char* _path, Sbox* sb){
 	this->key_path = _path;
 	if (do_KeyExpansion())
 		cout << "Failed to Read the Key" << endl;
-	this->ver = version;
+	sbox = sb;
 }
 Key KeyExpansion::operator[](int index) {
 	return key[index];
@@ -51,7 +50,6 @@ errno_t KeyExpansion::do_KeyExpansion() {
 		cout << endl;
 	}
 	cout << "-------------------------------------------------------------" << endl;
-	cout << hex << (short)polynomial[1] << endl;
 	return 0;
 }
 
@@ -70,7 +68,7 @@ void KeyExpansion::G_function(int round) {
 
 	// sbox 구현 후 통과
 	for (size_t i = 0; i < 4; i++) 
-		gValue[i] = aes_sbox[(unsigned char)gValue[i]];
+		gValue[i] = sbox->my_aes_sbox[(unsigned char)gValue[i]];
 
 	// RCj XOR
 	uint8_t RCj[4] = { 0x01, 0, 0, 0 };
@@ -84,6 +82,4 @@ void KeyExpansion::G_function(int round) {
 
 	for (size_t i = 0; i < 4; i++)
 		 gValue[i] ^= RCj[i];
-	for (size_t i = 0; i < 4; i++)
-		cout << hex << (short)gValue[i] << endl;
 }

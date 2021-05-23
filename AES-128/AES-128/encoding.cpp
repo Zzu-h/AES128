@@ -1,15 +1,14 @@
 #include "encoding.h"
-
-encoding::encoding(const char* _plain, const char* _cipher, const char* _key, int version)
-	:keys(_key, version) {
+encoding::encoding(const char* _plain, const char* _cipher, const char* _key, Sbox* sb)
+	:keys(_key, sb) {
 	this->plain_Path = _plain;
 	this->cipher_Path = _cipher;
-	this->ver = version;
+	sbox = sb;
 }
 
 errno_t encoding::doEncoding() {
-
 	plain.open(plain_Path, ios::in | ios::binary);
+
 	if (!plain.is_open()) {
 		cout << "Plain bin File was not open. \nPlease Check the plaintext" << endl;
 		return 1;
@@ -72,7 +71,7 @@ void encoding::Copy() {
 void encoding::Substitute() {
 	// sbox »ç¿ë
 	for (size_t i = 0; i < PlainSize; i++)
-		ciphertext[i] = aes_sbox[(unsigned char)plaintext[i]];
+		ciphertext[i] = sbox->my_aes_sbox[(unsigned char)plaintext[i]];
 
 	Copy();
 }

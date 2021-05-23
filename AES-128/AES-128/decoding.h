@@ -9,6 +9,7 @@ private:
 	KeyExpansion keys;
 	ifstream cipher;
 	ofstream plain;
+	Sbox* sbox;
 
 	const char* cipher_Path;
 	const char* plain_Path;
@@ -17,8 +18,6 @@ private:
 	char ciphertext[CipherSize] = { 0 };
 	char plaintext[PlainSize] = { 0 };
 
-	bool ver = polynomial_standard;
-
 	void Copy();
 	void Substitute();
 	void ShiftRows();
@@ -26,6 +25,6 @@ private:
 	void AddRoundKey();
 	void getCurKey(int);
 public:
-	decoding(const char*, const char*, const char*, int );
+	decoding(const char*, const char*, const char*, Sbox*);
 	errno_t doDecoding();
 };

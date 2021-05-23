@@ -1,3 +1,2 @@
-﻿  KeyExpansion.cpp
-C:\Users\User\Desktop\git 모음\AES128\AES-128\AES-128\KeyExpansion.cpp(30,21): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  AES-128.vcxproj -> C:\Users\User\Desktop\git 모음\AES128\AES-128\x64\Debug\AES-128.exe
+﻿  main.cpp
+  AES-128.vcxproj -> D:\인하대학교\3학년 1학기(2021-1)\컴보\과제\10w AES\AES128\AES-128\x64\Debug\AES-128.exe

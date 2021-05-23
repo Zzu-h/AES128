@@ -1,15 +1,14 @@
 #include "decoding.h"
-
-decoding::decoding(const char* _cipher, const char* _plain, const char* _key, int version)
-	:keys(_key, version) {
+decoding::decoding(const char* _cipher, const char* _plain, const char* _key, Sbox* sb)
+	:keys(_key, sb) {
 	this->cipher_Path = _cipher;
 	this->plain_Path = _plain;
-	this->ver = version;
+	sbox = sb;
 }
 
 errno_t decoding::doDecoding() {
-
 	cipher.open(cipher_Path, ios::in | ios::binary);
+
 	if (!cipher.is_open()) {
 		cout << "Cipher bin File was not open. \nPlease Check the ciphertext" << endl;
 		plain.close();
@@ -72,7 +71,7 @@ void decoding::Copy() {
 void decoding::Substitute() {
 	// sbox »ç¿ë
 	for (size_t i = 0; i < CipherSize; i++)
-		plaintext[i] = inv_sbox[(unsigned char)ciphertext[i]];
+		plaintext[i] = sbox->my_inv_sbox[(unsigned char)ciphertext[i]];
 	
 	Copy();
 }
