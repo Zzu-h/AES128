@@ -1,9 +1,9 @@
 #include "encoding.h"
-encoding::encoding(const char* _plain, const char* _cipher, const char* _key, Sbox* sb)
-	:keys(_key, sb) {
+encoding::encoding(const char* _plain, const char* _cipher, const char* _key, bool flag)
+	:keys(_key, flag) {
 	this->plain_Path = _plain;
 	this->cipher_Path = _cipher;
-	sbox = sb;
+	this->printFlag = flag;
 }
 
 errno_t encoding::doEncoding() {
@@ -40,6 +40,8 @@ errno_t encoding::doEncoding() {
 		AddRoundKey();
 
 		for (size_t round = 1; round <= Round; round++) {
+			printFlag && cout <<dec << round<< " round" << endl;
+
 			getCurKey(round);
 
 			Substitute();
@@ -71,33 +73,84 @@ void encoding::Copy() {
 void encoding::Substitute() {
 	// sbox 사용
 	for (size_t i = 0; i < PlainSize; i++)
-		ciphertext[i] = sbox->my_aes_sbox[(unsigned char)plaintext[i]];
+		ciphertext[i] = sbox.my_aes_sbox[(unsigned char)plaintext[i]];
+
+	if (printFlag) {
+		cout << "BS: ";
+		for (size_t i = 0; i < KeySize; i++)
+			cout << hex << (short)ciphertext[i] << ' ';
+		cout << endl;
+	}
 
 	Copy();
 }
 void encoding::ShiftRows() {
+	char state[4][4];
 	size_t idx = 0;
 	for (size_t i = 0; i < 4; i++)
 		for (size_t k = 0; k < 4; k++, idx++)
-			ciphertext[idx] = plaintext[((k + i) % 4) + (4 * i)];
+			state[k][i] = plaintext[idx];
+
+	char rotateState[4][4];
+	for (size_t i = 0; i < 4; i++)
+		for (size_t k = 0; k < 4; k++)
+			rotateState[i][k] = state[i][(i + k) % 4];
+
+	idx = 0;
+	for (size_t i = 0; i < 4; i++)
+		for (size_t k = 0; k < 4; k++, idx++)
+			ciphertext[idx] = rotateState[k][i];
+
+	if (printFlag) {
+		cout << "SR: ";
+		for (size_t i = 0; i < KeySize; i++)
+			cout << hex << (short)ciphertext[i] << ' ';
+		cout << endl;
+	}
 	Copy();
 }
 errno_t encoding::MixColumns() {
-	// GF 사용
-	for (size_t i = 0; i < 4; i++) 
+
+	char state[4][4];
+	size_t idx = 0;
+	for (size_t i = 0; i < 4; i++)
+		for (size_t k = 0; k < 4; k++, idx++)
+			state[k][i] = plaintext[idx];
+
+	char mixState[4][4];
+	for (size_t i = 0; i < 4; i++)
 		for (size_t k = 0; k < 4; k++)
-			ciphertext[i + k * 4] = Multiply(plaintext[i + 0 * 4], mix_col_y[k][0])
-			^ Multiply(plaintext[i + 1 * 4], mix_col_y[k][1])
-			^ Multiply(plaintext[i + 2 * 4], mix_col_y[k][2])
-			^ Multiply(plaintext[i + 3 * 4], mix_col_y[k][3]);
-	
+			mixState[k][i] = Multiply(state[0][i], mix_col_y[k][0])
+			^ Multiply(state[1][i], mix_col_y[k][1])
+			^ Multiply(state[2][i], mix_col_y[k][2])
+			^ Multiply(state[3][i], mix_col_y[k][3]);
+
+	idx = 0;
+	for (size_t i = 0; i < 4; i++)
+		for (size_t k = 0; k < 4; k++, idx++)
+			ciphertext[idx] = mixState[k][i];
+
+	if (printFlag) {
+		cout << "MR: ";
+		for (size_t i = 0; i < KeySize; i++)
+			cout << hex << (short)ciphertext[i] << ' ';
+		cout << endl;
+	}
+
 	Copy();
 	return 0;
 }
-
 void encoding::AddRoundKey() {
 	for (size_t i = 0; i < KeySize; i++)
 		ciphertext[i] = plaintext[i] ^ curKey[i];
+
+	if (printFlag) {
+		cout << "AR: ";
+		for (size_t i = 0; i < KeySize; i++)
+			cout << hex << (short)ciphertext[i] << ' ';
+		cout << endl;
+	}
+
 	Copy();
 }
 

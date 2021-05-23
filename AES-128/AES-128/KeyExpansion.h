@@ -15,14 +15,16 @@ class KeyExpansion
 private:
 	Key key[KeySize * (Round + 1)];
 	ifstream ReadKey;
-	Sbox* sbox;
+	Sbox sbox;
 
 	Key gValue[4];
 	const char* key_path;
 
+	bool printFlag;
+
 	errno_t do_KeyExpansion();
 	void G_function(int);
 public:
-	KeyExpansion(const char*, Sbox*);
+	KeyExpansion(const char*, bool);
 	Key operator[](int);
 };

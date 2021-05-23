@@ -1,10 +1,6 @@
 #include "Sbox.h"
 
 Sbox::Sbox() {
-	for(auto i = 0; i<256; i++){
-			this->my_aes_sbox[i] = aes_sbox[i];
-			this->my_inv_sbox[i]= inv_sbox[i];
-	}
 	forward[0] = 0xf1;
 	inverse[0] = 0xA4;
 	for (size_t i = 1; i < 8; i++) {
@@ -12,8 +8,6 @@ Sbox::Sbox() {
 		inverse[i] = (inverse[i - 1] << 1) | (inverse[i - 1] >> 7); // left shift
 	}
 	make_Sbox();
-	Copy();
-	Print_Sbox();
 }
 uint8_t Sbox::get_Sbox(uint8_t e){
 	uint8_t inv_e = bin_inv(e);
@@ -96,14 +90,8 @@ uint8_t Sbox::bin_inv(uint8_t a){
 	return dgh[1];
 }
 
-void Sbox::Copy() {
-	for (auto i = 0; i < 256; i++) {
-		aes_sbox[i] = this->my_aes_sbox[i];
-		inv_sbox[i] = this->my_inv_sbox[i];
-	}
-}
 void Sbox::Print_Sbox() {
-	/*cout << "--------------------------------------\nsbox" << endl;
+	cout << "--------------------------------------\nsbox" << endl;
 	for (auto i = 0; i < 16; i++) {
 		for (auto k = 0; k < 16; k++)
 			cout << hex << (short)this->my_aes_sbox[k + i * 16] << ' ';
@@ -113,19 +101,6 @@ void Sbox::Print_Sbox() {
 	for (auto i = 0; i < 16; i++) {
 		for (auto k = 0; k < 16; k++)
 			cout << hex << (short)my_inv_sbox[k + i * 16] << ' ';
-		cout << endl;
-	}
-	cout << "--------------------------------------" << endl;*/
-	cout << "--------------------------------------\nsbox" << endl;
-	for (auto i = 0; i < 16; i++) {
-		for (auto k = 0; k < 16; k++)
-			cout << hex << (short)aes_sbox[k + i * 16] << ' ';
-		cout << endl;
-	}
-	cout << "\ninverse_sbox" << endl;
-	for (auto i = 0; i < 16; i++) {
-		for (auto k = 0; k < 16; k++)
-			cout << hex << (short)inv_sbox[k + i * 16] << ' ';
 		cout << endl;
 	}
 	cout << "--------------------------------------" << endl;
